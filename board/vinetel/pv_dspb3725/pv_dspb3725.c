@@ -40,9 +40,9 @@
 #include <asm/mach-types.h>
 #include <linux/mtd/nand.h>
 #include "pv_dspb3725.h"
-#if KIMBG_ADD
-#include "fpga.h"
-#endif
+//#if KIMBG_ADD
+//#include "fpga.h"
+//#endif
 
 #if KIMBG_ADD
 #include <twl4030.h>
@@ -316,40 +316,41 @@ int ehci_hcd_stop(int index)
 #define FPGA_GPMC4_CONFIG6	0x00000FCF
 #define FPGA_GPMC4_CONFIG7	0x00000f68		//0x2800 0000
 
-static void setup_fpga_chip(void)
-{
-	struct ctrl *ctrl_base = (struct ctrl *)OMAP34XX_CTRL_BASE;
-	int					cs;
+//static void setup_fpga_chip(void)
+//{
+//	struct ctrl *ctrl_base = (struct ctrl *)OMAP34XX_CTRL_BASE;
+//	int					cs;
+//
+//	/* Configure GPMC registers */
+//	cs = 3;
+//	writel(FPGA_GPMC3_CONFIG1, &gpmc_cfg->cs[cs].config1);
+//	writel(FPGA_GPMC3_CONFIG2, &gpmc_cfg->cs[cs].config2);
+//	writel(FPGA_GPMC3_CONFIG3, &gpmc_cfg->cs[cs].config3);
+//	writel(FPGA_GPMC3_CONFIG4, &gpmc_cfg->cs[cs].config4);
+//	writel(FPGA_GPMC3_CONFIG5, &gpmc_cfg->cs[cs].config5);
+//	writel(FPGA_GPMC3_CONFIG6, &gpmc_cfg->cs[cs].config6);
+//	writel(FPGA_GPMC3_CONFIG7, &gpmc_cfg->cs[cs].config7);
+//
+//	cs = 4;
+//	writel(FPGA_GPMC4_CONFIG1, &gpmc_cfg->cs[cs].config1);
+//	writel(FPGA_GPMC4_CONFIG2, &gpmc_cfg->cs[cs].config2);
+//	writel(FPGA_GPMC4_CONFIG3, &gpmc_cfg->cs[cs].config3);
+//	writel(FPGA_GPMC4_CONFIG4, &gpmc_cfg->cs[cs].config4);
+//	writel(FPGA_GPMC4_CONFIG5, &gpmc_cfg->cs[cs].config5);
+//	writel(FPGA_GPMC4_CONFIG6, &gpmc_cfg->cs[cs].config6);
+//	writel(FPGA_GPMC4_CONFIG7, &gpmc_cfg->cs[cs].config7);
+//
+//#if 0
+//	/* Enable off mode for NWE in PADCONF_GPMC_NWE register */
+//	writew(readw(&ctrl_base ->gpmc_nwe) | 0x0E00, &ctrl_base->gpmc_nwe);
+//	/* Enable off mode for NOE in PADCONF_GPMC_NADV_ALE register */
+//	writew(readw(&ctrl_base->gpmc_noe) | 0x0E00, &ctrl_base->gpmc_noe);
+//	/* Enable off mode for ALE in PADCONF_GPMC_NADV_ALE register */
+//	writew(readw(&ctrl_base->gpmc_nadv_ale) | 0x0E00,
+//		&ctrl_base->gpmc_nadv_ale);
+//#endif
+//}
 
-	/* Configure GPMC registers */
-	cs = 3;
-	writel(FPGA_GPMC3_CONFIG1, &gpmc_cfg->cs[cs].config1);
-	writel(FPGA_GPMC3_CONFIG2, &gpmc_cfg->cs[cs].config2);
-	writel(FPGA_GPMC3_CONFIG3, &gpmc_cfg->cs[cs].config3);
-	writel(FPGA_GPMC3_CONFIG4, &gpmc_cfg->cs[cs].config4);
-	writel(FPGA_GPMC3_CONFIG5, &gpmc_cfg->cs[cs].config5);
-	writel(FPGA_GPMC3_CONFIG6, &gpmc_cfg->cs[cs].config6);
-	writel(FPGA_GPMC3_CONFIG7, &gpmc_cfg->cs[cs].config7);
-
-	cs = 4;
-	writel(FPGA_GPMC4_CONFIG1, &gpmc_cfg->cs[cs].config1);
-	writel(FPGA_GPMC4_CONFIG2, &gpmc_cfg->cs[cs].config2);
-	writel(FPGA_GPMC4_CONFIG3, &gpmc_cfg->cs[cs].config3);
-	writel(FPGA_GPMC4_CONFIG4, &gpmc_cfg->cs[cs].config4);
-	writel(FPGA_GPMC4_CONFIG5, &gpmc_cfg->cs[cs].config5);
-	writel(FPGA_GPMC4_CONFIG6, &gpmc_cfg->cs[cs].config6);
-	writel(FPGA_GPMC4_CONFIG7, &gpmc_cfg->cs[cs].config7);
-
-#if 0
-	/* Enable off mode for NWE in PADCONF_GPMC_NWE register */
-	writew(readw(&ctrl_base ->gpmc_nwe) | 0x0E00, &ctrl_base->gpmc_nwe);
-	/* Enable off mode for NOE in PADCONF_GPMC_NADV_ALE register */
-	writew(readw(&ctrl_base->gpmc_noe) | 0x0E00, &ctrl_base->gpmc_noe);
-	/* Enable off mode for ALE in PADCONF_GPMC_NADV_ALE register */
-	writew(readw(&ctrl_base->gpmc_nadv_ale) | 0x0E00,
-		&ctrl_base->gpmc_nadv_ale);
-#endif
-}
 #endif
 #endif
 /*
@@ -362,11 +363,11 @@ int misc_init_r(void)
 	i2c_init(CONFIG_SYS_I2C_SPEED, CONFIG_SYS_I2C_SLAVE);
 #endif
 
-#if KIMBG_ADD
-#if defined(CONFIG_FPGA)
-	setup_fpga_chip();
-#endif
-#endif
+//#if KIMBG_ADD
+//#if defined(CONFIG_FPGA)
+//	setup_fpga_chip();
+//#endif
+//#endif
 
 #if defined(CONFIG_CMD_NET)
 	setup_net_chip();
@@ -397,11 +398,11 @@ int misc_init_r(void)
 //for VBUS
 //		twl4030_i2c_write_u8(0x48, 0x26, 0x0a);
 #endif
-#if KIMBG_ADD
-#if defined(CONFIG_FPGA)
-	sio_init_fpga ();
-#endif
-#endif
+//#if KIMBG_ADD
+//#if defined(CONFIG_FPGA)
+//sio_init_fpga ();
+//#endif
+//#endif
 
 	return 0;
 }

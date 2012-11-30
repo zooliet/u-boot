@@ -15,6 +15,7 @@
 *.swp
 *.patch
 *.bin
+*.lst
 
 # Build tree
 /build-*
