@@ -199,89 +199,99 @@ static struct omap_usbhs_board_data usbhs_bdata = {
 #endif
 };
 
-int ehci_hcd_init(void)
+int ehci_hcd_init(int index, struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
-#if KIMBG_CHG_XXX
-#define GPIO_PHY_RESET 147
-#define OMAP_USBTLL_SYSCONFIG       (0x10)
-#define OMAP_USBTLL_SYSSTATUS       (0x14)
-#define OMAP_UHH_SYSCONFIG        (0x10)
-#define OMAP_UHH_HOSTCONFIG       (0x40)
-/*
- * Initialize the OMAP3 EHCI controller and PHY on the BeagleBoard.
- * Based on "drivers/usb/host/ehci-omap.c" from Linux 2.6.37.
- * See there for additional Copyrights.
- */
-	debug("Initializing OMAP3 ECHI\n");
-
-	/* Put the PHY in RESET */
-	gpio_request(GPIO_PHY_RESET, "");
-	gpio_direction_output(GPIO_PHY_RESET, 0);
-	gpio_set_value(GPIO_PHY_RESET, 0);
-
-	/* Hold the PHY in RESET for enough time till DIR is high */
-	/* Refer: ISSUE1 */
-	udelay(10);
-
-	struct prcm *prcm_base = (struct prcm *)PRCM_BASE;
-	/* Enable USBHOST_L3_ICLK (USBHOST_MICLK) */
-	sr32(&prcm_base->iclken_usbhost, 0, 1, 1);
-	/*
-	 * Enable USBHOST_48M_FCLK (USBHOST_FCLK1)
-	 * and USBHOST_120M_FCLK (USBHOST_FCLK2)
-	 */
-	sr32(&prcm_base->fclken_usbhost, 0, 2, 3);
-	/* Enable USBTTL_ICLK */
-	sr32(&prcm_base->iclken3_core, 2, 1, 1);
-	/* Enable USBTTL_FCLK */
-	sr32(&prcm_base->fclken3_core, 2, 1, 1);
-	debug("USB clocks enabled\n");
-
-	/* perform TLL soft reset, and wait until reset is complete */
-	writel(OMAP_USBTLL_SYSCONFIG_SOFTRESET,
-		OMAP_USBTLL_BASE + OMAP_USBTLL_SYSCONFIG);
-	/* Wait for TLL reset to complete */
-	while (!(readl(OMAP_USBTLL_BASE + OMAP_USBTLL_SYSSTATUS)
-			& OMAP_USBTLL_SYSSTATUS_RESETDONE));
-	debug("TLL reset done\n");
-
-	writel(OMAP_USBTLL_SYSCONFIG_ENAWAKEUP |
-		OMAP_USBTLL_SYSCONFIG_SIDLEMODE |
-		OMAP_USBTLL_SYSCONFIG_CACTIVITY,
-		OMAP_USBTLL_BASE + OMAP_USBTLL_SYSCONFIG);
-
-	/* Put UHH in NoIdle/NoStandby mode */
-	writel(OMAP_UHH_SYSCONFIG_ENAWAKEUP
-		| OMAP_UHH_SYSCONFIG_SIDLEMODE
-		| OMAP_UHH_SYSCONFIG_CACTIVITY
-		| OMAP_UHH_SYSCONFIG_MIDLEMODE,
-		OMAP_UHH_BASE + OMAP_UHH_SYSCONFIG);
-
-	/* setup burst configurations */
-	writel(OMAP_UHH_HOSTCONFIG_INCR4_BURST_EN
-		| OMAP_UHH_HOSTCONFIG_INCR8_BURST_EN
-		| OMAP_UHH_HOSTCONFIG_INCR16_BURST_EN,
-		OMAP_UHH_BASE + OMAP_UHH_HOSTCONFIG);
-
-	/*
-	 * Refer ISSUE1:
-	 * Hold the PHY in RESET for enough time till
-	 * PHY is settled and ready
-	 */
-	udelay(10);
-	gpio_set_value(GPIO_PHY_RESET, 1);
-
-	debug("OMAP3 EHCI init done\n");
-	return 0;
-#else
-	  return omap_ehci_hcd_init(&usbhs_bdata);
-#endif
+	return omap_ehci_hcd_init(&usbhs_bdata, hccr, hcor);
 }
 
-int ehci_hcd_stop(void)
+// int ehci_hcd_init(void)
+// {
+// #if KIMBG_CHG_XXX
+// #define GPIO_PHY_RESET 147
+// #define OMAP_USBTLL_SYSCONFIG       (0x10)
+// #define OMAP_USBTLL_SYSSTATUS       (0x14)
+// #define OMAP_UHH_SYSCONFIG        (0x10)
+// #define OMAP_UHH_HOSTCONFIG       (0x40)
+// /*
+//  * Initialize the OMAP3 EHCI controller and PHY on the BeagleBoard.
+//  * Based on "drivers/usb/host/ehci-omap.c" from Linux 2.6.37.
+//  * See there for additional Copyrights.
+//  */
+// 	debug("Initializing OMAP3 ECHI\n");
+// 
+// 	/* Put the PHY in RESET */
+// 	gpio_request(GPIO_PHY_RESET, "");
+// 	gpio_direction_output(GPIO_PHY_RESET, 0);
+// 	gpio_set_value(GPIO_PHY_RESET, 0);
+// 
+// 	/* Hold the PHY in RESET for enough time till DIR is high */
+// 	/* Refer: ISSUE1 */
+// 	udelay(10);
+// 
+// 	struct prcm *prcm_base = (struct prcm *)PRCM_BASE;
+// 	/* Enable USBHOST_L3_ICLK (USBHOST_MICLK) */
+// 	sr32(&prcm_base->iclken_usbhost, 0, 1, 1);
+// 	/*
+// 	 * Enable USBHOST_48M_FCLK (USBHOST_FCLK1)
+// 	 * and USBHOST_120M_FCLK (USBHOST_FCLK2)
+// 	 */
+// 	sr32(&prcm_base->fclken_usbhost, 0, 2, 3);
+// 	/* Enable USBTTL_ICLK */
+// 	sr32(&prcm_base->iclken3_core, 2, 1, 1);
+// 	/* Enable USBTTL_FCLK */
+// 	sr32(&prcm_base->fclken3_core, 2, 1, 1);
+// 	debug("USB clocks enabled\n");
+// 
+// 	/* perform TLL soft reset, and wait until reset is complete */
+// 	writel(OMAP_USBTLL_SYSCONFIG_SOFTRESET,
+// 		OMAP_USBTLL_BASE + OMAP_USBTLL_SYSCONFIG);
+// 	/* Wait for TLL reset to complete */
+// 	while (!(readl(OMAP_USBTLL_BASE + OMAP_USBTLL_SYSSTATUS)
+// 			& OMAP_USBTLL_SYSSTATUS_RESETDONE));
+// 	debug("TLL reset done\n");
+// 
+// 	writel(OMAP_USBTLL_SYSCONFIG_ENAWAKEUP |
+// 		OMAP_USBTLL_SYSCONFIG_SIDLEMODE |
+// 		OMAP_USBTLL_SYSCONFIG_CACTIVITY,
+// 		OMAP_USBTLL_BASE + OMAP_USBTLL_SYSCONFIG);
+// 
+// 	/* Put UHH in NoIdle/NoStandby mode */
+// 	writel(OMAP_UHH_SYSCONFIG_ENAWAKEUP
+// 		| OMAP_UHH_SYSCONFIG_SIDLEMODE
+// 		| OMAP_UHH_SYSCONFIG_CACTIVITY
+// 		| OMAP_UHH_SYSCONFIG_MIDLEMODE,
+// 		OMAP_UHH_BASE + OMAP_UHH_SYSCONFIG);
+// 
+// 	/* setup burst configurations */
+// 	writel(OMAP_UHH_HOSTCONFIG_INCR4_BURST_EN
+// 		| OMAP_UHH_HOSTCONFIG_INCR8_BURST_EN
+// 		| OMAP_UHH_HOSTCONFIG_INCR16_BURST_EN,
+// 		OMAP_UHH_BASE + OMAP_UHH_HOSTCONFIG);
+// 
+// 	/*
+// 	 * Refer ISSUE1:
+// 	 * Hold the PHY in RESET for enough time till
+// 	 * PHY is settled and ready
+// 	 */
+// 	udelay(10);
+// 	gpio_set_value(GPIO_PHY_RESET, 1);
+// 
+// 	debug("OMAP3 EHCI init done\n");
+// 	return 0;
+// #else
+// 	  return omap_ehci_hcd_init(&usbhs_bdata);
+// #endif
+// }
+
+int ehci_hcd_stop(int index)
 {
-	  return omap_ehci_hcd_stop();
+	return omap_ehci_hcd_stop();
 }
+
+// int ehci_hcd_stop(void)
+// {
+// 	  return omap_ehci_hcd_stop();
+// }
 
 #endif /* CONFIG_USB_EHCI */
 #endif
@@ -494,7 +504,16 @@ int board_eth_init(bd_t *bis)
 #if defined(CONFIG_GENERIC_MMC) && !defined(CONFIG_SPL_BUILD)
 int board_mmc_init(bd_t *bis)
 {
-	omap_mmc_init(0);
+	omap_mmc_init(0, 0, 0);
 	return 0;
 }
 #endif
+
+
+// #if defined(CONFIG_GENERIC_MMC) && !defined(CONFIG_SPL_BUILD)
+// int board_mmc_init(bd_t *bis)
+// {
+// 	omap_mmc_init(0);
+// 	return 0;
+// }
+// #endif
