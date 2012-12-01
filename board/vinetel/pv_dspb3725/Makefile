@@ -28,8 +28,8 @@ LIB	= $(obj)lib$(BOARD).o
 #COBJS-y := $(BOARD).o fpga.o
 COBJS-y := $(BOARD).o 
 #COBJS-$(CONFIG_STATUS_LED) += led.o
-COBJS   := $(sort $(COBJS-y))
 
+COBJS  := $(sort $(COBJS-y))
 SRCS	:= $(COBJS:.o=.c)
 OBJS	:= $(addprefix $(obj),$(COBJS))
 

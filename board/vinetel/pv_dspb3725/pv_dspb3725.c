@@ -28,29 +28,77 @@
  * MA 02111-1307 USA
  */
 #include <common.h>
-#include <netdev.h>
-#include <asm/io.h>
-#include <asm/arch/mem.h>
-#include <asm/arch/mux.h>
-#include <asm/arch/sys_proto.h>
-#include <asm/arch/mmc_host_def.h>
-#include <asm/gpio.h>
-#include <asm/arch/ehci.h>
-#include <i2c.h>
-#include <asm/mach-types.h>
-#include <linux/mtd/nand.h>
-#include "pv_dspb3725.h"
-//#if KIMBG_ADD
-//#include "fpga.h"
-//#endif
-
-#if KIMBG_ADD
+#ifdef CONFIG_STATUS_LED
+#include <status_led.h>
+#endif
 #include <twl4030.h>
-#ifdef CONFIG_USB_EHCI
+#include <linux/mtd/nand.h>
+#include <asm/io.h>
+#include <asm/arch/mmc_host_def.h>
+#include <asm/arch/mux.h>
+#include <asm/arch/mem.h>
+#include <asm/arch/sys_proto.h>
+#include <asm/gpio.h>
+#include <asm/mach-types.h>
+#include <asm/omap_musb.h>
+#include <asm/errno.h>
+#include <linux/usb/ch9.h>
+#include <linux/usb/gadget.h>
+#include <linux/usb/musb.h>
+#include "pv_dspb3725.h"
+#include <command.h>
+
+#if CONFIG_USB_EHCI
 #include <usb.h>
 #include <asm/ehci-omap.h>
 #endif
+
+/* not used in Beagleboard */
+#if 0
+// #include <netdev.h>
+// #include <asm/arch/ehci.h>
+// #include <i2c.h>
 #endif
+
+#if CONFIG_FPGA
+// #include "fpga.h"
+#endif
+
+
+
+/*
+ * Routine: board_init
+ * Description: Early hardware init.
+ */
+int board_init(void)
+{
+	gpmc_init(); /* in SRAM or SDRAM, finish GPMC */
+	/* board id for Linux */
+	gd->bd->bi_arch_number = MACH_TYPE_OMAP3EVM;
+	/* boot param addr */
+	gd->bd->bi_boot_params = (OMAP34XX_SDRC_CS0 + 0x100);
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #define OMAP3EVM_GPIO_ETH_RST_GEN1		64
 #define OMAP3EVM_GPIO_ETH_RST_GEN2		7
@@ -117,20 +165,15 @@ u8 omap3_evm_need_extvbus(void)
 }
 #endif
 
-/*
- * Routine: board_init
- * Description: Early hardware init.
- */
-int board_init(void)
-{
-	gpmc_init(); /* in SRAM or SDRAM, finish GPMC */
-	/* board id for Linux */
-	gd->bd->bi_arch_number = MACH_TYPE_OMAP3EVM;
-	/* boot param addr */
-	gd->bd->bi_boot_params = (OMAP34XX_SDRC_CS0 + 0x100);
 
-	return 0;
-}
+
+
+
+
+
+
+
+
 
 #ifdef CONFIG_SPL_BUILD
 /*
