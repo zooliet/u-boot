@@ -466,6 +466,7 @@ void board_init_f(ulong bootflag)
 	}
 	memcpy(id, (void *)gd, sizeof(gd_t));
 
+	puts(">>>>>>>board_init_f()\n");  // hl1sqi
 	relocate_code(addr_sp, id, addr);
 
 	/* NOTREACHED - relocate_code() does not return */
