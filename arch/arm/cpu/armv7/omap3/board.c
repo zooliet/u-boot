@@ -228,11 +228,9 @@ void try_unlock_memory()
  * Description: Does early system init of muxing and clocks.
  *              - Called path is with SRAM stack.
  *****************************************************************************/
-void s_init(void)
+void s_init1(void) // hl1sqi
 {
 	int in_sdram = is_running_in_sdram();
-
-	puts("***s_init() in board.c"); //hl1sqi
 
 	watchdog_init();
 
