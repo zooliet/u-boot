@@ -504,6 +504,7 @@ void board_init_r(gd_t *id, ulong dest_addr)
 	enable_caches();
 
 	debug("monitor flash len: %08lX\n", monitor_flash_len);
+	puts(">>board_init_r()\n");  // hl1sqi
 	board_init();	/* Setup chipselects */
 	/*
 	 * TODO: printing of the clock inforamtion of the board is now

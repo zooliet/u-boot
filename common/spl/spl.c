@@ -149,6 +149,7 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 {
 	u32 boot_device;
 	debug(">>spl:board_init_r()\n");
+	puts(">>spl:board_init_r()\n");  // hl1sqi
 
 #ifdef CONFIG_SYS_SPL_MALLOC_START
 	mem_malloc_init(CONFIG_SYS_SPL_MALLOC_START,
@@ -157,7 +158,7 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 
 	timer_init();
 
-#ifdef CONFIG_SPL_BOARD_INIT
+#ifdef CONFIG_SPL_BOARD_INIT	
 	spl_board_init();
 #endif
 
