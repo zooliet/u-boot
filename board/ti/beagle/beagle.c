@@ -329,6 +329,8 @@ int misc_init_r(void)
 	struct gpio *gpio6_base = (struct gpio *)OMAP34XX_GPIO6_BASE;
 	struct control_prog_io *prog_io_base = (struct control_prog_io *)OMAP34XX_CTRL_BASE;
 
+	puts("***misc_init_r in beagle.c\n"); // hl1sqi
+
 	/* Enable i2c2 pullup resisters */
 	writel(~(PRG_I2C2_PULLUPRESX), &prog_io_base->io1);
 

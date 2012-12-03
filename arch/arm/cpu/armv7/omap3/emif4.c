@@ -172,7 +172,7 @@ void dram_init_banksize (void)
  * mem_init() -
  *  - Initialize memory subsystem
  */
-void mem_init_1(void) //hl1sqi
+void mem_init(void)
 {
 	do_emif4_init();
 }
