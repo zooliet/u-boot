@@ -42,4 +42,6 @@ void gpmc_init(void)
 	 * It conflicts with our MPDB (both at 0x08000000)
 	 */
 	writel(0, &gpmc_cfg->cs[0].config7);
+	
+	puts("gpmc_init() in mem-common.c\n"); // hl1sqi
 }

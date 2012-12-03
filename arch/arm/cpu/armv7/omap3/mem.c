@@ -163,4 +163,5 @@ void gpmc_init(void)
 	size = PISMO1_ONEN_SIZE;
 	enable_gpmc_cs_config(gpmc_config, &gpmc_cfg->cs[0], base, size);
 #endif
+	puts("gpmc_init() in mem.c\n"); // hl1sqi
 }
