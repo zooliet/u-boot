@@ -247,7 +247,7 @@ void dram_init_banksize (void)
  *  - Init the sdrc chip,
  *  - Selects CS0 and CS1,
  */
-void mem_init(void)
+void mem_init_1(void) // hl1sqi
 {
 	/* only init up first bank here */
 	do_sdrc_init(CS0, EARLY_INIT);
