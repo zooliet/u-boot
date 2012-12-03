@@ -113,7 +113,7 @@ void spl_display_print(void)
  * done in each of these cases
  * This function is called with SRAM stack.
  */
-void s_init(void)
+void s_init1(void) // hl1sqi
 {
 	init_omap_revision();
 #ifdef CONFIG_SPL_BUILD
