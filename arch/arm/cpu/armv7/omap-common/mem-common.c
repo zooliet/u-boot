@@ -43,5 +43,4 @@ void gpmc_init(void)
 	 */
 	writel(0, &gpmc_cfg->cs[0].config7);
 	
-	puts("gpmc_init() in mem-common.c\n"); // hl1sqi
 }

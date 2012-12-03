@@ -115,6 +115,8 @@ void spl_display_print(void)
  */
 void s_init(void)
 {
+	puts("***s_init() in hwinit-common.c"); //hl1sqi
+	
 	init_omap_revision();
 #ifdef CONFIG_SPL_BUILD
 	if (warm_reset() && (omap_revision() <= OMAP5430_ES1_0))
