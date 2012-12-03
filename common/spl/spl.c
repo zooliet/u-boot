@@ -213,7 +213,7 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 	switch (spl_image.os) {
 	case IH_OS_U_BOOT:
 		debug("Jumping to U-Boot\n");
-		puts("Jumping to U-Boot\n"); //hl1sqi
+		puts("***Jumping to U-Boot\n"); //hl1sqi
 		break;
 #ifdef CONFIG_SPL_OS_BOOT
 	case IH_OS_LINUX:

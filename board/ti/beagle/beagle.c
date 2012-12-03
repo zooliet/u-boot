@@ -91,6 +91,7 @@ static struct {
  */
 int board_init(void)
 {
+	puts("****User-specific board_init"); //hl1sqi
 	gpmc_init(); /* in SRAM or SDRAM, finish GPMC */
 	/* board id for Linux */
 	gd->bd->bi_arch_number = MACH_TYPE_OMAP3_BEAGLE;
