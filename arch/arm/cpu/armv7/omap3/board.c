@@ -116,7 +116,6 @@ void spl_board_init(void)
 #ifdef CONFIG_SPL_I2C_SUPPORT
 	i2c_init(CONFIG_SYS_I2C_SPEED, CONFIG_SYS_I2C_SLAVE);
 #endif
-	puts(">>spl:spl_board_init()\n");  // hl1sqi
 }
 #endif /* CONFIG_SPL_BUILD */
 

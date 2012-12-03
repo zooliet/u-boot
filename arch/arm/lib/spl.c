@@ -50,7 +50,7 @@ void __weak board_init_f(ulong dummy)
 	/* Set global data pointer. */
 	gd = &gdata;
 
-	// board_init_r(NULL, 0);  hl1sqi
+	board_init_r(NULL, 0);
 }
 
 /*
