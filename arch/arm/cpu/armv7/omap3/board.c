@@ -271,7 +271,7 @@ void s_init(void)
  * Routine: misc_init_r
  * Description: A basic misc_init_r that just displays the die ID
  */
-int __weak misc_init_r(void)
+int __weak misc_init_r(void) 
 {
 	dieid_num_r();
 
