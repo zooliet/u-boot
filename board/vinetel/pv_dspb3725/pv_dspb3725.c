@@ -242,20 +242,20 @@ static unsigned int get_expansion_id(void)
  */
 static void beagle_display_init(void)
 {
-	omap3_dss_venc_config(&venc_config_std_tv, VENC_HEIGHT, VENC_WIDTH);
-	switch (get_board_revision()) {
-	case REVISION_AXBX:
-	case REVISION_CX:
-	case REVISION_C4:
-		omap3_dss_panel_config(&dvid_cfg);
-		break;
-	case REVISION_XM_A:
-	case REVISION_XM_B:
-	case REVISION_XM_C:
-	default:
-		omap3_dss_panel_config(&dvid_cfg_xm);
-		break;
-	}
+	// omap3_dss_venc_config(&venc_config_std_tv, VENC_HEIGHT, VENC_WIDTH);
+	// switch (get_board_revision()) {
+	// case REVISION_AXBX:
+	// case REVISION_CX:
+	// case REVISION_C4:
+	// 	omap3_dss_panel_config(&dvid_cfg);
+	// 	break;
+	// case REVISION_XM_A:
+	// case REVISION_XM_B:
+	// case REVISION_XM_C:
+	// default:
+	// 	omap3_dss_panel_config(&dvid_cfg_xm);
+	// 	break;
+	// }
 }
 
 /*
@@ -263,32 +263,32 @@ static void beagle_display_init(void)
  */
 static void beagle_dvi_pup(void)
 {
-	uchar val;
-
-	switch (get_board_revision()) {
-	case REVISION_AXBX:
-	case REVISION_CX:
-	case REVISION_C4:
-	case REVISION_XM_A:
-		gpio_request(170, "");
-		gpio_direction_output(170, 0);
-		gpio_set_value(170, 1);
-		break;
-	case REVISION_XM_B:
-	case REVISION_XM_C:
-	default:
-		#define GPIODATADIR1 (TWL4030_BASEADD_GPIO+3)
-		#define GPIODATAOUT1 (TWL4030_BASEADD_GPIO+6)
-
-		i2c_read(TWL4030_CHIP_GPIO, GPIODATADIR1, 1, &val, 1);
-		val |= 4;
-		i2c_write(TWL4030_CHIP_GPIO, GPIODATADIR1, 1, &val, 1);
-
-		i2c_read(TWL4030_CHIP_GPIO, GPIODATAOUT1, 1, &val, 1);
-		val |= 4;
-		i2c_write(TWL4030_CHIP_GPIO, GPIODATAOUT1, 1, &val, 1);
-		break;
-	}
+	// uchar val;
+	// 
+	// switch (get_board_revision()) {
+	// case REVISION_AXBX:
+	// case REVISION_CX:
+	// case REVISION_C4:
+	// case REVISION_XM_A:
+	// 	gpio_request(170, "");
+	// 	gpio_direction_output(170, 0);
+	// 	gpio_set_value(170, 1);
+	// 	break;
+	// case REVISION_XM_B:
+	// case REVISION_XM_C:
+	// default:
+	// 	#define GPIODATADIR1 (TWL4030_BASEADD_GPIO+3)
+	// 	#define GPIODATAOUT1 (TWL4030_BASEADD_GPIO+6)
+	// 
+	// 	i2c_read(TWL4030_CHIP_GPIO, GPIODATADIR1, 1, &val, 1);
+	// 	val |= 4;
+	// 	i2c_write(TWL4030_CHIP_GPIO, GPIODATADIR1, 1, &val, 1);
+	// 
+	// 	i2c_read(TWL4030_CHIP_GPIO, GPIODATAOUT1, 1, &val, 1);
+	// 	val |= 4;
+	// 	i2c_write(TWL4030_CHIP_GPIO, GPIODATAOUT1, 1, &val, 1);
+	// 	break;
+	// }
 }
 #endif
 
