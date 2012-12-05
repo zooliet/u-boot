@@ -323,7 +323,7 @@ static struct musb_hdrc_platform_data musb_plat = {
  * Routine: misc_init_r
  * Description: Configure board specific parts
  */
-int misc_init_r_x(void) // hl1sqi
+int misc_init_r(void)
 {
 	struct gpio *gpio5_base = (struct gpio *)OMAP34XX_GPIO5_BASE;
 	struct gpio *gpio6_base = (struct gpio *)OMAP34XX_GPIO6_BASE;
