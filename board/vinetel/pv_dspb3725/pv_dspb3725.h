@@ -27,7 +27,7 @@
 
 const omap3_sysinfo sysinfo = {
 	DDR_STACKED,
-	"OMAP3 Beagle board",
+	"OMAP3 pv_dspb3725 board",
 #if defined(CONFIG_ENV_IS_IN_ONENAND)
 	"OneNAND",
 #else
