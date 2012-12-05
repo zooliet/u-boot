@@ -273,6 +273,7 @@ void s_init(void)
  */
 int __weak misc_init_r(void) 
 {
+	puts("***misc_init_r in board.c\n");  // hl1sqi
 	dieid_num_r();
 
 	return 0;
