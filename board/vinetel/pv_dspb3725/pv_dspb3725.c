@@ -47,7 +47,7 @@
 #include <linux/usb/ch9.h>
 #include <linux/usb/gadget.h>
 #include <linux/usb/musb.h>
-#include "beagle.h"
+#include "pv_dspb3725.h"
 #include <command.h>
 
 #ifdef CONFIG_USB_EHCI
