@@ -271,8 +271,9 @@ void s_init(void)
  * Routine: misc_init_r
  * Description: A basic misc_init_r that just displays the die ID
  */
-int __weak misc_init_r(void)
+int __weak misc_init_r(void) 
 {
+	puts("***misc_init_r in board.c\n");  // hl1sqi
 	dieid_num_r();
 
 	return 0;
