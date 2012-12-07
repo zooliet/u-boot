@@ -91,8 +91,6 @@ static struct {
  */
 int board_init(void)
 {
-	puts("****User-specific board_init\n"); //hl1sqi
-
 	gpmc_init(); /* in SRAM or SDRAM, finish GPMC */
 	/* board id for Linux */
 	gd->bd->bi_arch_number = MACH_TYPE_OMAP3_BEAGLE;
@@ -149,64 +147,34 @@ static int get_board_revision(void)
 void get_board_mem_timings(u32 *mcfg, u32 *ctrla, u32 *ctrlb, u32 *rfr_ctrl,
 		u32 *mr)
 {
+
+		*mcfg = ( (3 << 24) | (6 << 20) | (1 << 19) | (256 << 8) | (2 << 6) | (1 << 4) | (1 << 3) | (1 << 2) | (1 << 0) );
+		*ctrla = ( (21 << 27) | (10 << 22) | (7 << 18) | (3 << 15) | (3 << 12) | (2 << 9) | (3 << 6) | (6 << 0) );
+		*ctrlb = ( (1 << 16) | (1 <<12) | (5  << 8) | (23 << 0) );
+#if 0
 	int pop_mfr, pop_id;
 
 	/*
 	 * We need to identify what PoP memory is on the board so that
-	 * we know what timings to use.  If we can't identify it then
-	 * we know it's an xM.  To map the ID values please see nand_ids.c
+	 * we know what timings to use.  To map the ID values please see
+	 * nand_ids.c
 	 */
 	identify_nand_chip(&pop_mfr, &pop_id);
 
-	*mr = MICRON_V_MR_165;
-	switch (get_board_revision()) {
-	case REVISION_C4:
-		if (pop_mfr == NAND_MFR_STMICRO && pop_id == 0xba) {
-			/* 512MB DDR */
-			*mcfg = NUMONYX_V_MCFG_165(512 << 20);
-			*ctrla = NUMONYX_V_ACTIMA_165;
-			*ctrlb = NUMONYX_V_ACTIMB_165;
-			*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
-			break;
-		} else if (pop_mfr == NAND_MFR_MICRON && pop_id == 0xba) {
-			/* Beagleboard Rev C4, 512MB Nand/256MB DDR*/
-			*mcfg = MICRON_V_MCFG_165(128 << 20);
-			*ctrla = MICRON_V_ACTIMA_165;
-			*ctrlb = MICRON_V_ACTIMB_165;
-			*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
-			break;
-		} else if (pop_mfr == NAND_MFR_MICRON && pop_id == 0xbc) {
-			/* Beagleboard Rev C5, 256MB DDR */
-			*mcfg = MICRON_V_MCFG_200(256 << 20);
-			*ctrla = MICRON_V_ACTIMA_200;
-			*ctrlb = MICRON_V_ACTIMB_200;
-			*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_200MHz;
-			break;
-		}
-	case REVISION_XM_A:
-	case REVISION_XM_B:
-	case REVISION_XM_C:
-		if (pop_mfr == 0) {
-			/* 256MB DDR */
-			*mcfg = MICRON_V_MCFG_200(256 << 20);
-			*ctrla = MICRON_V_ACTIMA_200;
-			*ctrlb = MICRON_V_ACTIMB_200;
-			*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_200MHz;
-		} else {
-			/* 512MB DDR */
-			*mcfg = NUMONYX_V_MCFG_165(512 << 20);
-			*ctrla = NUMONYX_V_ACTIMA_165;
-			*ctrlb = NUMONYX_V_ACTIMB_165;
-			*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
-		}
-		break;
-	default:
-		/* Assume 128MB and Micron/165MHz timings to be safe */
+	if (pop_mfr == NAND_MFR_HYNIX && pop_id == 0xbc) {
+		/* 256MB DDR */
+		*mcfg = HYNIX_V_MCFG_200(256 << 20);
+		*ctrla = HYNIX_V_ACTIMA_200;
+		*ctrlb = HYNIX_V_ACTIMB_200;
+	} else {
+		/* 128MB DDR */
 		*mcfg = MICRON_V_MCFG_165(128 << 20);
 		*ctrla = MICRON_V_ACTIMA_165;
 		*ctrlb = MICRON_V_ACTIMB_165;
-		*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
 	}
+#endif
+	*rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
+	*mr = MICRON_V_MR_165;
 }
 #endif
 

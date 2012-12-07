@@ -204,14 +204,14 @@
 							/* CS0 */
 #define GPMC_NAND_ECC_LP_x16_LAYOUT	1
 
-#define CONFIG_SYS_MAX_NAND_DEVICE	1		/* Max number of NAND */
+#define CONFIG_SYS_MAX_NAND_DEVICE	2		/* Max number of NAND */
 							/* devices */
 #define CONFIG_JFFS2_NAND
 /* nand device jffs2 lives on */
 #define CONFIG_JFFS2_DEV		"nand0"
 /* start of jffs2 partition */
 #define CONFIG_JFFS2_PART_OFFSET	0x680000
-#define CONFIG_JFFS2_PART_SIZE		0xf980000	/* size of jffs2 */
+#define CONFIG_JFFS2_PART_SIZE		0x1f980000	/* size of jffs2 */
 							/* partition */
 
 /* Environment information */
@@ -221,18 +221,17 @@
 	"loadaddr=0x80200000\0" \
 	"rdaddr=0x81000000\0" \
 	"usbtty=cdc_acm\0" \
-	"bootfile=uImage.beagle\0" \
-	"console=ttyO2,115200n8\0" \
+	"bootfile=uImage\0" \
+	"rdfile=uInitrd\0" \
+	"console=ttyO0,115200n8\0" \
 	"mpurate=auto\0" \
 	"buddy=none\0" \
 	"optargs=\0" \
 	"camera=none\0" \
-	"vram=12M\0" \
-	"dvimode=640x480MR-16@60\0" \
-	"defaultdisplay=dvi\0" \
 	"mmcdev=0\0" \
-	"mmcroot=/dev/mmcblk0p2 rw\0" \
-	"mmcrootfstype=ext3 rootwait\0" \
+	"mmcroot_org=/dev/mmcblk0p2 rw\0" \
+	"mmcroot=/dev/mmcblk0p2 ro\0" \
+	"mmcrootfstype=ext4 rootwait\0" \
 	"nandroot=ubi0:rootfs ubi.mtd=4\0" \
 	"nandrootfstype=ubifs\0" \
 	"ramroot=/dev/ram0 rw ramdisk_size=65536 initrd=0x81000000,64M\0" \
@@ -242,9 +241,6 @@
 		"mpurate=${mpurate} " \
 		"buddy=${buddy} "\
 		"camera=${camera} "\
-		"vram=${vram} " \
-		"omapfb.mode=dvi:${dvimode} " \
-		"omapdss.def_disp=${defaultdisplay} " \
 		"root=${mmcroot} " \
 		"rootfstype=${mmcrootfstype}\0" \
 	"nandargs=setenv bootargs console=${console} " \
@@ -252,9 +248,6 @@
 		"mpurate=${mpurate} " \
 		"buddy=${buddy} "\
 		"camera=${camera} "\
-		"vram=${vram} " \
-		"omapfb.mode=dvi:${dvimode} " \
-		"omapdss.def_disp=${defaultdisplay} " \
 		"root=${nandroot} " \
 		"rootfstype=${nandrootfstype}\0" \
 	"bootenv=uEnv.txt\0" \
@@ -265,14 +258,11 @@
 		"${optargs} " \
 		"mpurate=${mpurate} " \
 		"buddy=${buddy} "\
-		"vram=${vram} " \
-		"omapfb.mode=dvi:${dvimode} " \
-		"omapdss.def_disp=${defaultdisplay} " \
 		"root=${ramroot} " \
 		"rootfstype=${ramrootfstype}\0" \
-	"loadramdisk=fatload mmc ${mmcdev} ${rdaddr} ramdisk.gz\0" \
-	"loaduimagefat=fatload mmc ${mmcdev} ${loadaddr} uImage\0" \
-	"loaduimage=ext2load mmc ${mmcdev}:2 ${loadaddr} /boot/uImage\0" \
+	"loadramdisk=fatload mmc ${mmcdev} ${rdaddr} ${rdfile}\0" \
+	"loaduimagefat=fatload mmc ${mmcdev} ${loadaddr} ${bootfile}\0" \
+	"loaduimage=ext2load mmc ${mmcdev}:2 ${loadaddr} /boot/${bootfile}\0" \
 	"mmcboot=echo Booting from mmc ...; " \
 		"run mmcargs; " \
 		"bootm ${loadaddr}\0" \
@@ -282,19 +272,10 @@
 		"bootm ${loadaddr}\0" \
 	"ramboot=echo Booting from ramdisk ...; " \
 		"run ramargs; " \
-		"bootm ${loadaddr}\0" \
-	"userbutton=if gpio input 173; then run userbutton_xm; " \
-		"else run userbutton_nonxm; fi;\0" \
-	"userbutton_xm=gpio input 4;\0" \
-	"userbutton_nonxm=gpio input 7;\0"
-/* "run userbutton" will return 1 (false) if is pressed and 0 (false) if not */
+		"bootm ${loadaddr}\0"
 #define CONFIG_BOOTCOMMAND \
 	"mmc dev ${mmcdev}; if mmc rescan; then " \
-		"if run userbutton; then " \
-			"setenv bootenv uEnv.txt;" \
-		"else " \
-			"setenv bootenv user.txt;" \
-		"fi;" \
+		"setenv bootenv uEnv.txt;" \
 		"echo SD/MMC found on device ${mmcdev};" \
 		"if run loadbootenv; then " \
 			"echo Loaded environment from ${bootenv};" \
@@ -304,7 +285,7 @@
 			"echo Running uenvcmd ...;" \
 			"run uenvcmd;" \
 		"fi;" \
-		"if run loaduimage; then " \
+		"if run loaduimagefat; then " \
 			"run mmcboot;" \
 		"fi;" \
 	"fi;" \
@@ -316,7 +297,7 @@
  */
 #define CONFIG_SYS_LONGHELP		/* undef to save memory */
 #define CONFIG_SYS_HUSH_PARSER		/* use "hush" command parser */
-#define CONFIG_SYS_PROMPT		"OMAP3 beagleboard.org # "
+#define CONFIG_SYS_PROMPT		"OMAP3 pv_dspb3725 # "
 #define CONFIG_SYS_CBSIZE		512	/* Console I/O Buffer Size */
 /* Print Buffer Size */
 #define CONFIG_SYS_PBSIZE		(CONFIG_SYS_CBSIZE + \
@@ -324,15 +305,6 @@
 #define CONFIG_SYS_MAXARGS		32	/* max number of command args */
 /* Boot Argument Buffer Size */
 #define CONFIG_SYS_BARGSIZE		(CONFIG_SYS_CBSIZE)
-
-#define CONFIG_SYS_ALT_MEMTEST		1
-#define CONFIG_SYS_MEMTEST_START	(0x82000000)		/* memtest */
-								/* defaults */
-#define CONFIG_SYS_MEMTEST_END		(0x87FFFFFF) 		/* 128MB */
-#define CONFIG_SYS_MEMTEST_SCRATCH	(0x81000000)	/* dummy address */
-
-#define CONFIG_SYS_LOAD_ADDR		(OMAP34XX_SDRC_CS0)	/* default */
-							/* load address */
 
 /*
  * OMAP3 has 12 GP timers, they can be driven by the system clock
@@ -350,6 +322,14 @@
 #define PHYS_SDRAM_1		OMAP34XX_SDRC_CS0
 #define PHYS_SDRAM_2		OMAP34XX_SDRC_CS1
 
+#define CONFIG_SYS_ALT_MEMTEST		1
+#define CONFIG_SYS_MEMTEST_START	(0x82000000)		/* memtest */
+								/* defaults */
+#define CONFIG_SYS_MEMTEST_END		(0x87FFFFFF) 		/* 128MB */
+#define CONFIG_SYS_MEMTEST_SCRATCH	(0x81000000)	/* dummy address */
+
+#define CONFIG_SYS_LOAD_ADDR		(OMAP34XX_SDRC_CS0)	/* default */
+							/* load address */
 /*-----------------------------------------------------------------------
  * FLASH and environment organization
  */
@@ -403,7 +383,7 @@
 #define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR	0x300 /* address 0x60000 */
 #define CONFIG_SYS_U_BOOT_MAX_SIZE_SECTORS	0x200 /* 256 KB */
 #define CONFIG_SYS_MMC_SD_FAT_BOOT_PARTITION	1
-#define CONFIG_SPL_FAT_LOAD_PAYLOAD_NAME	"u-boot.img"
+#define CONFIG_SPL_FAT_LOAD_PAYLOAD_NAME	"u-boot.bin"
 
 #define CONFIG_SPL_BOARD_INIT
 #define CONFIG_SPL_LIBCOMMON_SUPPORT
@@ -425,12 +405,13 @@
 /* NAND boot config */
 #define CONFIG_SYS_NAND_5_ADDR_CYCLE
 #define CONFIG_SYS_NAND_PAGE_COUNT	64
-#define CONFIG_SYS_NAND_PAGE_SIZE	2048
-#define CONFIG_SYS_NAND_OOBSIZE		64
-#define CONFIG_SYS_NAND_BLOCK_SIZE	(128*1024)
+#define CONFIG_SYS_NAND_PAGE_SIZE	4096
+#define CONFIG_SYS_NAND_OOBSIZE		128
+#define CONFIG_SYS_NAND_BLOCK_SIZE	(256*1024)
 #define CONFIG_SYS_NAND_BAD_BLOCK_POS	0
-#define CONFIG_SYS_NAND_ECCPOS		{2, 3, 4, 5, 6, 7, 8, 9,\
-						10, 11, 12, 13}
+#define CONFIG_SYS_NAND_ECCPOS		\
+			{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, \
+			 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77}
 #define CONFIG_SYS_NAND_ECCSIZE		512
 #define CONFIG_SYS_NAND_ECCBYTES	3
 #define CONFIG_SYS_NAND_U_BOOT_START	CONFIG_SYS_TEXT_BASE
