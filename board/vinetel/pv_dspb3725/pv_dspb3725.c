@@ -132,23 +132,6 @@ void get_board_mem_timings(u32 *mcfg, u32 *ctrla, u32 *ctrlb, u32 *rfr_ctrl,
 #endif
 
 
-#ifdef CONFIG_VIDEO_OMAP3
-/*
- * Configure DSS to display background color on DVID
- * Configure VENC to display color bar on S-Video
- */
-static void beagle_display_init(void)
-{
-}
-
-/*
- * Enable DVI power
- */
-static void beagle_dvi_pup(void)
-{
-}
-#endif
-
 #ifdef CONFIG_USB_MUSB_OMAP2PLUS
 static struct musb_hdrc_config musb_config = {
 	.multipoint     = 1,
@@ -211,14 +194,9 @@ int misc_init_r(void)
 
 	dieid_num_r();
 
-#ifdef CONFIG_VIDEO_OMAP3
-	beagle_dvi_pup();
-	beagle_display_init();
-	omap3_dss_enable();
-#endif
 
 #ifdef CONFIG_USB_MUSB_OMAP2PLUS
-	musb_register(&musb_plat, &musb_board_data, (void *)MUSB_BASE);
+	musb_register(&musb_plat, &musb_board_data, (void *)MUSB_BASE); // hl1sqi let's what is happening.
 #endif
 
 	return 0;
@@ -255,7 +233,7 @@ void show_boot_progress(int val)
 static struct omap_usbhs_board_data usbhs_bdata = {
 	.port_mode[0] = OMAP_EHCI_PORT_MODE_PHY,
 	.port_mode[1] = OMAP_EHCI_PORT_MODE_PHY,
-	// .port_mode[1] = OMAP_EHCI_PORT_MODE_PHY, // hl1sqi : check this !!!	
+	// .port_mode[1] = OMAP_USBHS_PORT_MODE_UNUSED, // hl1sqi : check this !!!	
 	.port_mode[2] = OMAP_USBHS_PORT_MODE_UNUSED
 };
 
