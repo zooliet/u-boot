@@ -76,6 +76,7 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
+/*
 static struct {
 	unsigned int device_vendor;
 	unsigned char revision;
@@ -84,6 +85,7 @@ static struct {
 	char env_var[16];
 	char env_setting[64];
 } expansion_config;
+*/
 
 /*
  * Routine: board_init
@@ -192,6 +194,7 @@ int misc_init_r(void)
 	writel(~(GPIO31 | GPIO30 | GPIO29 | GPIO28 | GPIO22 | GPIO21 |
 		GPIO15 | GPIO14 | GPIO13 | GPIO12), &gpio5_base->oe);
 
+	setup_net_chip(); // hl1sqi
 	dieid_num_r();
 
 
@@ -255,3 +258,23 @@ int board_eth_init(bd_t *bis)
 	return usb_eth_initialize(bis);
 }
 #endif
+
+static void setup_net_chip(void)
+{
+	struct ctrl *ctrl_base = (struct ctrl *)OMAP34XX_CTRL_BASE;
+//	struct control_prog_io *prog_io_base = (struct control_prog_io *)OMAP34XX_CTRL_BASE;
+
+	writel(NET_GPMC_CONFIG1, &gpmc_cfg->cs[5].config1);
+	writel(NET_GPMC_CONFIG2, &gpmc_cfg->cs[5].config2);
+	writel(NET_GPMC_CONFIG3, &gpmc_cfg->cs[5].config3);
+	writel(NET_GPMC_CONFIG4, &gpmc_cfg->cs[5].config4);
+	writel(NET_GPMC_CONFIG5, &gpmc_cfg->cs[5].config5);
+	writel(NET_GPMC_CONFIG6, &gpmc_cfg->cs[5].config6);
+	writel(NET_GPMC_CONFIG7, &gpmc_cfg->cs[5].config7);
+
+	writew(readw(&ctrl_base->gpmc_nwe) | 0x0E00, &ctrl_base->gpmc_nwe);
+	writew(readw(&ctrl_base->gpmc_noe) | 0x0E00, &ctrl_base->gpmc_noe);
+	writew(readw(&ctrl_base->gpmc_nadv_ale) | 0x0E00, &ctrl_base->gpmc_nadv_ale);
+}
+
+
