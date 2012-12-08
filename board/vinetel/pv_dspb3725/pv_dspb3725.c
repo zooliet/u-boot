@@ -104,12 +104,14 @@ int board_init(void)
 	return 0;
 }
 
+/*
 static int get_board_revision(void)
 {
 	int revision;
 	revision = 1210;
 	return revision;
 }
+*/
 
 #ifdef CONFIG_SPL_BUILD
 /*
@@ -192,15 +194,6 @@ int misc_init_r(void)
 					TWL4030_PM_RECEIVER_VAUX2_VSEL_18,
 					TWL4030_PM_RECEIVER_VAUX2_DEV_GRP,
 					TWL4030_PM_RECEIVER_DEV_GRP_P1);
-
-	printf("Unrecognized expansion board: %x\n", expansion_config.device_vendor);
-	setenv("buddy", "unknown");
-
-	if (expansion_config.content == 1) {
-		setenv(expansion_config.env_var, expansion_config.env_setting);
-		puts("*** check to see if this is executed: YES"); // hl1sqi
-	else
-		puts("*** check to see if this is executed: NO"); // hl1sqi
 
 	twl4030_power_init();
 
