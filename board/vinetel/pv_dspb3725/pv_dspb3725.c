@@ -194,23 +194,7 @@ int misc_init_r(void)
 	writel(~(GPIO31 | GPIO30 | GPIO29 | GPIO28 | GPIO22 | GPIO21 |
 		GPIO15 | GPIO14 | GPIO13 | GPIO12), &gpio5_base->oe);
 
-	setup_net_chip(); // hl1sqi
 	dieid_num_r();
-
-	// hl1sqi
-	{
-		unsigned int addr=0x48002520;	//PBIASLITE
-		unsigned int	value;
-		value = readl(addr);
-		value &= ~0x1;
-		value |= 0x2;
-		writel(value,addr);
-	}
-
-  twl4030_pmrecv_vsel_cfg(TWL4030_PM_RECEIVER_VMMC1_DEDICATED,
-		0,
-		TWL4030_PM_RECEIVER_VMMC1_DEV_GRP,
-		TWL4030_PM_RECEIVER_DEV_GRP_P1);
 
 
 #ifdef CONFIG_USB_MUSB_OMAP2PLUS
@@ -250,8 +234,8 @@ void show_boot_progress(int val)
 
 static struct omap_usbhs_board_data usbhs_bdata = {
 	.port_mode[0] = OMAP_EHCI_PORT_MODE_PHY,
-//	.port_mode[1] = OMAP_EHCI_PORT_MODE_PHY,
-	.port_mode[1] = OMAP_USBHS_PORT_MODE_UNUSED, // hl1sqi : check this !!!	
+	.port_mode[1] = OMAP_EHCI_PORT_MODE_PHY,
+//	.port_mode[1] = OMAP_USBHS_PORT_MODE_UNUSED, // hl1sqi : check this !!!	
 	.port_mode[2] = OMAP_USBHS_PORT_MODE_UNUSED
 };
 
