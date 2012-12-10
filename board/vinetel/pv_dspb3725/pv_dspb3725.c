@@ -199,7 +199,7 @@ int misc_init_r(void)
 
 
 #ifdef CONFIG_USB_MUSB_OMAP2PLUS
-	musb_register(&musb_plat, &musb_board_data, (void *)MUSB_BASE); // hl1sqi let's what is happening.
+	musb_register(&musb_plat, &musb_board_data, (void *)MUSB_BASE); // hl1sqi let's see what is happening.
 #endif
 
 	return 0;
@@ -213,8 +213,8 @@ int misc_init_r(void)
  */
 void set_muxconf_regs(void)
 {
-	MUX_BEAGLE();
-	// MUX_EVM();  hl1sqi Need to compare these two settings...
+	// MUX_BEAGLE();
+	MUX_EVM();  // hl1sqi - Need to compare these two settings...
 }
 
 #if defined(CONFIG_GENERIC_MMC) && !defined(CONFIG_SPL_BUILD)
@@ -277,4 +277,31 @@ static void setup_net_chip(void)
 	writew(readw(&ctrl_base->gpmc_nadv_ale) | 0x0E00, &ctrl_base->gpmc_nadv_ale);
 }
 
+static void reset_net_chip(void)
+{
+	// int ret;
+	// int rst_gpio;
+	// 
+	// if (get_omap3_evm_rev() == OMAP3EVM_BOARD_GEN_1) {
+	// 	rst_gpio = OMAP3EVM_GPIO_ETH_RST_GEN1;
+	// } else {
+	// 	rst_gpio = OMAP3EVM_GPIO_ETH_RST_GEN2;
+	// }
+	// 
+	// ret = gpio_request(rst_gpio, "");
+	// if (ret < 0) {
+	// 	printf("Unable to get GPIO %d\n", rst_gpio);
+	// 	return ;
+	// }
+	// 
+	// /* Configure as output */
+	// gpio_direction_output(rst_gpio, 0);
+	// 
+	// /* Send a pulse on the GPIO pin */
+	// gpio_set_value(rst_gpio, 1);
+	// udelay(1);
+	// gpio_set_value(rst_gpio, 0);
+	// udelay(1);
+	// gpio_set_value(rst_gpio, 1);
+}
 
