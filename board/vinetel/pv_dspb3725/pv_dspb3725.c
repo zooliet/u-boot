@@ -213,8 +213,8 @@ int misc_init_r(void)
  */
 void set_muxconf_regs(void)
 {
-	// MUX_BEAGLE();
-	MUX_EVM();  // hl1sqi - Need to compare these two settings...
+	MUX_BEAGLE();
+	// MUX_EVM();  // hl1sqi - Need to compare these two settings...
 }
 
 #if defined(CONFIG_GENERIC_MMC) && !defined(CONFIG_SPL_BUILD)

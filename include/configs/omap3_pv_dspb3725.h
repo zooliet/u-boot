@@ -205,7 +205,7 @@
 							/* CS0 */
 #define GPMC_NAND_ECC_LP_x16_LAYOUT	1
 
-#define CONFIG_SYS_MAX_NAND_DEVICE	2		/* Max number of NAND */
+#define CONFIG_SYS_MAX_NAND_DEVICE	0		/* Max number of NAND */  // hl1sqi
 							/* devices */
 #define CONFIG_JFFS2_NAND
 /* nand device jffs2 lives on */
@@ -219,8 +219,8 @@
 #define CONFIG_BOOTDELAY		3
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
-	"loadaddr=0x80200000\0" \
-	"rdaddr=0x81000000\0" \
+	"loadaddr=0x80000000\0" \		/* hl1sqi */
+	"rdaddr=0x81600000\0" \			/* hl1sqi */
 	"usbtty=cdc_acm\0" \
 	"bootfile=uImage\0" \
 	"rdfile=uInitrd\0" \
