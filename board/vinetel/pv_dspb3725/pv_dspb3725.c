@@ -197,6 +197,21 @@ int misc_init_r(void)
 	setup_net_chip(); // hl1sqi
 	dieid_num_r();
 
+	// hl1sqi
+	{
+		unsigned int addr=0x48002520;	//PBIASLITE
+		unsigned int	value;
+		value = readl(addr);
+		value &= ~0x1;
+		value |= 0x2;
+		writel(value,addr);
+	}
+
+  twl4030_pmrecv_vsel_cfg(TWL4030_PM_RECEIVER_VMMC1_DEDICATED,
+		0,
+		TWL4030_PM_RECEIVER_VMMC1_DEV_GRP,
+		TWL4030_PM_RECEIVER_DEV_GRP_P1);
+
 
 #ifdef CONFIG_USB_MUSB_OMAP2PLUS
 	musb_register(&musb_plat, &musb_board_data, (void *)MUSB_BASE); // hl1sqi let's see what is happening.
