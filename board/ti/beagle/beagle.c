@@ -530,8 +530,10 @@ int board_mmc_init(bd_t *bis)
 /* Call usb_stop() before starting the kernel */
 void show_boot_progress(int val)
 {
-	if (val == BOOTSTAGE_ID_RUN_OS)
+	if (val == BOOTSTAGE_ID_RUN_OS) {
+		puts("***Am I being called?\n");
 		usb_stop();
+	}
 }
 
 static struct omap_usbhs_board_data usbhs_bdata = {
@@ -542,11 +544,13 @@ static struct omap_usbhs_board_data usbhs_bdata = {
 
 int ehci_hcd_init(int index, struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	puts("***Who comes first: ehci_hcd_init\n");
 	return omap_ehci_hcd_init(&usbhs_bdata, hccr, hcor);
 }
 
 int ehci_hcd_stop(int index)
 {
+	puts("***Who comes first: ehci_hcd_stop\n");
 	return omap_ehci_hcd_stop();
 }
 
@@ -555,6 +559,7 @@ int ehci_hcd_stop(int index)
 #if defined(CONFIG_USB_ETHER) && defined(CONFIG_MUSB_GADGET)
 int board_eth_init(bd_t *bis)
 {
+	puts("***Who comes first: board_eth_init\n");
 	return usb_eth_initialize(bis);
 }
 #endif
