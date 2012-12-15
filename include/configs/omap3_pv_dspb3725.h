@@ -219,7 +219,7 @@
 							/* devices */
 #define CONFIG_JFFS2_NAND
 /* nand device jffs2 lives on */
-#define CONFIG_JFFS2_DEV		"nand0"
+#define CONFIG_JFFS2_DEV		"nand1"
 /* start of jffs2 partition */
 #define CONFIG_JFFS2_PART_OFFSET	0x680000
 #define CONFIG_JFFS2_PART_SIZE		0x1f980000	/* size of jffs2 */
@@ -299,11 +299,15 @@
 	"ramboot=echo Booting from ramdisk ...; " \
 		"run ramargs; " \
 		"bootm ${loadaddr}\0" \
+	"usbethaddr=00:0C:29:B3:00:11\0" \
+	"ipaddr=192.168.1.199\0" \
+	"netmask=255.255.255.0\0" \
 	"userbutton=if gpio input 173; then run userbutton_xm; " \
 		"else run userbutton_nonxm; fi;\0" \
 	"userbutton_xm=gpio input 4;\0" \
 	"userbutton_nonxm=gpio input 7;\0"
 /* "run userbutton" will return 1 (false) if is pressed and 0 (false) if not */
+
 #define CONFIG_BOOTCOMMAND \
 	"if mmc rescan ${mmcdev}; then " \
 		"if run userbutton; then " \
