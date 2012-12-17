@@ -25,9 +25,6 @@
 
 #include <asm/arch/dss.h>
 
-static void setup_net_chip(void);
-static void reset_net_chip(void);
-
 const omap3_sysinfo sysinfo = {
 	DDR_STACKED,
 	"OMAP3 pv_dspb3725 board",
