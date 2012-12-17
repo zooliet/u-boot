@@ -291,7 +291,6 @@ const omap3_sysinfo sysinfo = {
 	MUX_VAL(CP(SYS_32K),				(IEN  | PTD | DIS | M0)) /*SYS_32K*/\
 	MUX_VAL(CP(SYS_CLKREQ),			(IEN  | PTD | DIS | M0)) /*SYS_CLKREQ*/\
 	MUX_VAL(CP(SYS_NIRQ),				(IEN  | PTU | EN  | M0)) /*SYS_nIRQ*/\
-	
 	MUX_VAL(CP(SYS_BOOT0),			(IEN  | PTD | DIS | M4)) /*GPIO_2*/\
 	MUX_VAL(CP(SYS_BOOT1),			(IEN  | PTD | DIS | M4)) /*GPIO_3*/\
 	MUX_VAL(CP(SYS_BOOT2),			(IEN  | PTD | DIS | M4)) /*GPIO_4 - MMC1_WP*/\
@@ -299,11 +298,9 @@ const omap3_sysinfo sysinfo = {
 	MUX_VAL(CP(SYS_BOOT4),			(IEN  | PTD | DIS | M4)) /*GPIO_6*/\
 	MUX_VAL(CP(SYS_BOOT5),			(IEN  | PTD | DIS | M4)) /*GPIO_7*/\
 	MUX_VAL(CP(SYS_BOOT6),			(IDIS | PTD | DIS | M4)) /*GPIO_8*/ \	
-	
 	MUX_VAL(CP(SYS_OFF_MODE),		(IEN  | PTD | DIS | M0)) /*SYS_OFF_MODE*/\	
 	MUX_VAL(CP(SYS_CLKOUT1),		(IEN  | PTD | DIS | M7)) /*SYS_CLKOUT1*/\
 	MUX_VAL(CP(SYS_CLKOUT2),		(IEN  | PTU | EN  | M7)) /*GPIO_186*/\
-
 	/* ETK */\
 	MUX_VAL(CP(ETK_CLK_ES2),	(IDIS | PTU | EN  | M3)) /*HSUSB1_STP*/\
 	MUX_VAL(CP(ETK_CTL_ES2),	(IDIS | PTU | DIS | M3)) /*HSUSB1_CLK*/\
@@ -387,7 +384,6 @@ const omap3_sysinfo sysinfo = {
 	MUX_VAL(CP(D2D_SREAD),			(IEN  | PTD | DIS | M0)) /*d2d_sread*/\
 	MUX_VAL(CP(D2D_MBUSFLAG),		(IEN  | PTD | DIS | M0)) /*d2d_mbusflag*/\
 	MUX_VAL(CP(D2D_SBUSFLAG),		(IEN  | PTD | DIS | M0)) /*d2d_sbusflag*/\
-
 	MUX_VAL(CP(SDRC_CKE0),			(IDIS | PTU | EN  | M0)) /*sdrc_cke0*/\
 	MUX_VAL(CP(SDRC_CKE1),			(IDIS | PTU | EN  | M0)) /*sdrc_cke1*/
 #endif
