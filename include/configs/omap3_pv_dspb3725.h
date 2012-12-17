@@ -93,14 +93,14 @@
 /* allow to overwrite serial and ethaddr */
 #define CONFIG_ENV_OVERWRITE
 #define CONFIG_BAUDRATE			115200
-#define CONFIG_SYS_BAUDRATE_TABLE	{4800, 9600, 19200, 38400, 57600,\
-					115200}
+#define CONFIG_SYS_BAUDRATE_TABLE	{4800, 9600, 19200, 38400, 57600, 115200}
 #define CONFIG_GENERIC_MMC		1
 #define CONFIG_MMC			1
 #define CONFIG_OMAP_HSMMC		1
 #define CONFIG_DOS_PARTITION		1
 
 /* Status LED */
+/*
 #define CONFIG_STATUS_LED		1
 #define CONFIG_BOARD_SPECIFIC_LED	1
 #define STATUS_LED_BIT			0x01
@@ -111,7 +111,7 @@
 #define STATUS_LED_PERIOD1		(CONFIG_SYS_HZ / 2)
 #define STATUS_LED_BOOT			STATUS_LED_BIT
 #define STATUS_LED_GREEN		STATUS_LED_BIT1
-
+*/
 /* Enable Multi Bus support for I2C */
 #define CONFIG_I2C_MULTI_BUS		1
 
@@ -119,20 +119,20 @@
 #define CONFIG_SYS_I2C_NOPROBES		{{0x0, 0x0}}
 
 /* USB */
-#define CONFIG_MUSB_GADGET
-#define CONFIG_USB_MUSB_OMAP2PLUS
-#define CONFIG_MUSB_PIO_ONLY
-#define CONFIG_USB_GADGET_DUALSPEED
+// #define CONFIG_MUSB_GADGET
+// #define CONFIG_USB_MUSB_OMAP2PLUS
+// #define CONFIG_MUSB_PIO_ONLY
+// #define CONFIG_USB_GADGET_DUALSPEED
 #define CONFIG_TWL4030_USB		1
-#define CONFIG_USB_ETHER
-#define CONFIG_USB_ETHER_RNDIS
+// #define CONFIG_USB_ETHER
+// #define CONFIG_USB_ETHER_RNDIS
 
 /* USB EHCI */
 #define CONFIG_CMD_USB
 #define CONFIG_USB_EHCI
 
 #define CONFIG_USB_EHCI_OMAP
-#define CONFIG_OMAP_EHCI_PHY1_RESET_GPIO	147
+#define CONFIG_OMAP_EHCI_PHY1_RESET_GPIO	156
 
 #define CONFIG_USB_ULPI
 #define CONFIG_USB_ULPI_VIEWPORT_OMAP
@@ -151,6 +151,8 @@
 #define CONFIG_CMD_CACHE
 #define CONFIG_CMD_EXT2		/* EXT2 Support			*/
 #define CONFIG_CMD_FAT		/* FAT support			*/
+#define CONFIG_CMD_BOOTZ	/* bootz zImage support		*/
+#define CONFIG_SUPPORT_RAW_INITRD	/* bootz raw initrd support */
 #define CONFIG_CMD_JFFS2	/* JFFS2 Support		*/
 #define CONFIG_CMD_MTDPARTS	/* Enable MTD parts commands */
 #define CONFIG_MTD_DEVICE	/* needed for mtdparts commands */
@@ -163,7 +165,7 @@
 #define CONFIG_CMD_MMC		/* MMC support			*/
 #define CONFIG_USB_STORAGE	/* USB storage support		*/
 #define CONFIG_CMD_NAND		/* NAND support			*/
-#define CONFIG_CMD_LED		/* LED support			*/
+/* #define CONFIG_CMD_LED */		/* LED support			*/
 #define CONFIG_CMD_NET      /* bootp, tftpboot, rarpboot    */
 #define CONFIG_CMD_NFS      /* NFS support          */
 #define CONFIG_CMD_PING
@@ -209,7 +211,7 @@
 							/* devices */
 #define CONFIG_JFFS2_NAND
 /* nand device jffs2 lives on */
-#define CONFIG_JFFS2_DEV		"nand0"
+#define CONFIG_JFFS2_DEV		"nand1"
 /* start of jffs2 partition */
 #define CONFIG_JFFS2_PART_OFFSET	0x680000
 #define CONFIG_JFFS2_PART_SIZE		0x1f980000	/* size of jffs2 */
@@ -219,8 +221,8 @@
 #define CONFIG_BOOTDELAY		3
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
-	"loadaddr=0x80000000\0" \	
-	"rdaddr=0x81600000\0" \			
+	"loadaddr=0x80300000\0" \	
+	"rdaddr=0x8100000\0" \			
 	"usbtty=cdc_acm\0" \
 	"bootfile=uImage\0" \
 	"rdfile=uInitrd\0" \
@@ -231,7 +233,7 @@
 	"camera=none\0" \
 	"mmcdev=0\0" \
 	"mmcroot_org=/dev/mmcblk0p2 rw\0" \
-	"mmcroot=/dev/mmcblk0p2 ro\0" \
+	"mmcroot=/dev/mmcblk0p2\0" \
 	"mmcrootfstype=ext4 rootwait\0" \
 	"nandroot=ubi0:rootfs ubi.mtd=4\0" \
 	"nandrootfstype=ubifs\0" \
@@ -298,7 +300,7 @@
  */
 #define CONFIG_SYS_LONGHELP		/* undef to save memory */
 #define CONFIG_SYS_HUSH_PARSER		/* use "hush" command parser */
-#define CONFIG_SYS_PROMPT		"OMAP3 pv_dspb3725 # "
+#define CONFIG_SYS_PROMPT		"Vinetel pv_dspb3725 # "
 #define CONFIG_SYS_CBSIZE		512	/* Console I/O Buffer Size */
 /* Print Buffer Size */
 #define CONFIG_SYS_PBSIZE		(CONFIG_SYS_CBSIZE + \
