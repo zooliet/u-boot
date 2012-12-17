@@ -174,7 +174,7 @@ int misc_init_r(void)
 	/* Enable i2c2 pullup resisters */
 	writel(~(PRG_I2C2_PULLUPRESX), &prog_io_base->io1);
 
-	MUX_BEAGLE_XM();
+	MUX_BEAGLE();
 	/* Set VAUX2 to 1.8V for EHCI PHY */
 	twl4030_pmrecv_vsel_cfg(TWL4030_PM_RECEIVER_VAUX2_DEDICATED,
 					TWL4030_PM_RECEIVER_VAUX2_VSEL_18,
@@ -213,7 +213,6 @@ int misc_init_r(void)
 void set_muxconf_regs(void)
 {
 	MUX_BEAGLE();
-	// MUX_EVM();  // hl1sqi - Need to compare these two settings...
 }
 
 #if defined(CONFIG_GENERIC_MMC) && !defined(CONFIG_SPL_BUILD)
@@ -235,9 +234,8 @@ void show_boot_progress(int val)
 }
 
 static struct omap_usbhs_board_data usbhs_bdata = {
-	.port_mode[0] = OMAP_EHCI_PORT_MODE_PHY,
+	.port_mode[0] = OMAP_USBHS_PORT_MODE_UNUSED,
 	.port_mode[1] = OMAP_EHCI_PORT_MODE_PHY,
-//	.port_mode[1] = OMAP_USBHS_PORT_MODE_UNUSED, // hl1sqi : check this !!!	
 	.port_mode[2] = OMAP_USBHS_PORT_MODE_UNUSED
 };
 
