@@ -146,6 +146,7 @@
 
 #define CONFIG_CMD_ASKENV
 
+#define CONFIG_CMD_BOOTZ        /* bootz zImage support         */
 #define CONFIG_CMD_CACHE
 #define CONFIG_CMD_EXT2		/* EXT2 Support			*/
 #define CONFIG_CMD_FAT		/* FAT support			*/

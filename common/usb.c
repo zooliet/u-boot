@@ -61,8 +61,8 @@
 #define USB_DEBUG	1
 #define USB_HUB_DEBUG	1
 #else
-#define USB_DEBUG	0
-#define USB_HUB_DEBUG	0
+#define USB_DEBUG	0 
+#define USB_HUB_DEBUG	0 
 #endif
 
 #define USB_PRINTF(fmt, args...)	debug_cond(USB_DEBUG, fmt, ##args)
@@ -118,8 +118,9 @@ int usb_init(void)
 		 * device 0 is always present
 		 * (root hub, so let it analyze)
 		 */
-		if (dev)
+		if (dev) {
 			usb_new_device(dev);
+		}
 
 		if (start_index == dev_index)
 			puts("No USB Device found\n");

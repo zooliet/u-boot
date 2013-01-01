@@ -119,7 +119,6 @@
 #define CONFIG_SYS_I2C_NOPROBES		{{0x0, 0x0}}
 
 /* USB */
-/*
 #define CONFIG_MUSB_GADGET
 #define CONFIG_USB_MUSB_OMAP2PLUS
 #define CONFIG_MUSB_PIO_ONLY
@@ -127,8 +126,6 @@
 #define CONFIG_TWL4030_USB		1
 #define CONFIG_USB_ETHER
 #define CONFIG_USB_ETHER_RNDIS
-*/
-#define CONFIG_TWL4030_USB		1
 
 /* USB EHCI */
 #define CONFIG_CMD_USB
@@ -210,7 +207,7 @@
 							/* CS0 */
 #define GPMC_NAND_ECC_LP_x16_LAYOUT	1
 
-#define CONFIG_SYS_MAX_NAND_DEVICE	2		/* Max number of NAND */  // hl1sqi
+#define CONFIG_SYS_MAX_NAND_DEVICE	2		/* Max number of NAND */  
 							/* devices */
 #define CONFIG_JFFS2_NAND
 /* nand device jffs2 lives on */
