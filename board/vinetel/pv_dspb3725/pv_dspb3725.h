@@ -303,7 +303,7 @@ const omap3_sysinfo sysinfo = {
 	MUX_VAL(CP(SYS_BOOT3),			(IEN  | PTD | DIS | M4)) /*GPIO_5*/\
 	MUX_VAL(CP(SYS_BOOT4),			(IEN  | PTD | DIS | M4)) /*GPIO_6*/\
 	MUX_VAL(CP(SYS_BOOT5),			(IEN  | PTD | DIS | M4)) /*GPIO_7*/\
-	MUX_VAL(CP(SYS_BOOT6),			(IDIS | PTD | DIS | M4)) /*GPIO_8*/ \	
+	MUX_VAL(CP(SYS_BOOT6),			(IDIS | PTD | DIS | M4)) /*GPIO_8*/\	
 	MUX_VAL(CP(SYS_OFF_MODE),		(IEN  | PTD | DIS | M0)) /*SYS_OFF_MODE*/\	
 	MUX_VAL(CP(SYS_CLKOUT1),		(IEN  | PTD | DIS | M0)) /*SYS_CLKOUT1*/\
 	MUX_VAL(CP(SYS_CLKOUT2),		(IEN  | PTU | EN  | M4)) /*GPIO_186*/\

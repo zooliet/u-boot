@@ -88,6 +88,61 @@ static struct {
 } expansion_config;
 */
 
+
+/* hl1oap */
+
+//for download
+#define FPGA_GPMC3_CONFIG1      0x00000000              //8bit
+#define FPGA_GPMC3_CONFIG2      0x001e1e01
+#define FPGA_GPMC3_CONFIG3      0x00080300
+#define FPGA_GPMC3_CONFIG4      0x1c091c09
+#define FPGA_GPMC3_CONFIG5      0x04181f1f
+#define FPGA_GPMC3_CONFIG6      0x00000FCF
+#define FPGA_GPMC3_CONFIG7      0x00000f64              //0x2400 0000
+
+#define FPGA_GPMC4_CONFIG1      0x00001000              //16bit
+#define FPGA_GPMC4_CONFIG2      0x001e1e01
+#define FPGA_GPMC4_CONFIG3      0x00080300
+#define FPGA_GPMC4_CONFIG4      0x1c091c09
+#define FPGA_GPMC4_CONFIG5      0x04181f1f
+#define FPGA_GPMC4_CONFIG6      0x00000FCF
+#define FPGA_GPMC4_CONFIG7      0x00000f68              //0x2800 0000
+
+static void setup_fpga_chip(void)
+{
+	// struct ctrl *ctrl_base = (struct ctrl *)OMAP34XX_CTRL_BASE;
+	int	cs;
+
+	/* Configure GPMC registers */
+	cs = 3;
+	writel(FPGA_GPMC3_CONFIG1, &gpmc_cfg->cs[cs].config1);
+	writel(FPGA_GPMC3_CONFIG2, &gpmc_cfg->cs[cs].config2);
+	writel(FPGA_GPMC3_CONFIG3, &gpmc_cfg->cs[cs].config3);
+	writel(FPGA_GPMC3_CONFIG4, &gpmc_cfg->cs[cs].config4);
+	writel(FPGA_GPMC3_CONFIG5, &gpmc_cfg->cs[cs].config5);
+	writel(FPGA_GPMC3_CONFIG6, &gpmc_cfg->cs[cs].config6);
+	writel(FPGA_GPMC3_CONFIG7, &gpmc_cfg->cs[cs].config7);
+	
+	cs = 4;
+	writel(FPGA_GPMC4_CONFIG1, &gpmc_cfg->cs[cs].config1);
+	writel(FPGA_GPMC4_CONFIG2, &gpmc_cfg->cs[cs].config2);
+	writel(FPGA_GPMC4_CONFIG3, &gpmc_cfg->cs[cs].config3);
+	writel(FPGA_GPMC4_CONFIG4, &gpmc_cfg->cs[cs].config4);
+	writel(FPGA_GPMC4_CONFIG5, &gpmc_cfg->cs[cs].config5);
+	writel(FPGA_GPMC4_CONFIG6, &gpmc_cfg->cs[cs].config6);
+	writel(FPGA_GPMC4_CONFIG7, &gpmc_cfg->cs[cs].config7);
+
+#if 0
+	/* Enable off mode for NWE in PADCONF_GPMC_NWE register */
+	writew(readw(&ctrl_base ->gpmc_nwe) | 0x0E00, &ctrl_base->gpmc_nwe);
+	/* Enable off mode for NOE in PADCONF_GPMC_NADV_ALE register */
+	writew(readw(&ctrl_base->gpmc_noe) | 0x0E00, &ctrl_base->gpmc_noe);
+	/* Enable off mode for ALE in PADCONF_GPMC_NADV_ALE register */
+	writew(readw(&ctrl_base->gpmc_nadv_ale) | 0x0E00,
+	        &ctrl_base->gpmc_nadv_ale);
+#endif
+}
+
 /*
  * Routine: board_init
  * Description: Early hardware init.
@@ -261,58 +316,4 @@ int board_eth_init(bd_t *bis)
 	return usb_eth_initialize(bis);
 }
 #endif
-
-/* hl1oap */
-
-//for download
-#define FPGA_GPMC3_CONFIG1      0x00000000              //8bit
-#define FPGA_GPMC3_CONFIG2      0x001e1e01
-#define FPGA_GPMC3_CONFIG3      0x00080300
-#define FPGA_GPMC3_CONFIG4      0x1c091c09
-#define FPGA_GPMC3_CONFIG5      0x04181f1f
-#define FPGA_GPMC3_CONFIG6      0x00000FCF
-#define FPGA_GPMC3_CONFIG7      0x00000f64              //0x2400 0000
-
-#define FPGA_GPMC4_CONFIG1      0x00001000              //16bit
-#define FPGA_GPMC4_CONFIG2      0x001e1e01
-#define FPGA_GPMC4_CONFIG3      0x00080300
-#define FPGA_GPMC4_CONFIG4      0x1c091c09
-#define FPGA_GPMC4_CONFIG5      0x04181f1f
-#define FPGA_GPMC4_CONFIG6      0x00000FCF
-#define FPGA_GPMC4_CONFIG7      0x00000f68              //0x2800 0000
-
-static void setup_fpga_chip(void)
-{
-	struct ctrl *ctrl_base = (struct ctrl *)OMAP34XX_CTRL_BASE;
-	int	cs;
-
-	/* Configure GPMC registers */
-	cs = 3;
-	writel(FPGA_GPMC3_CONFIG1, &gpmc_cfg->cs[cs].config1);
-	writel(FPGA_GPMC3_CONFIG2, &gpmc_cfg->cs[cs].config2);
-	writel(FPGA_GPMC3_CONFIG3, &gpmc_cfg->cs[cs].config3);
-	writel(FPGA_GPMC3_CONFIG4, &gpmc_cfg->cs[cs].config4);
-	writel(FPGA_GPMC3_CONFIG5, &gpmc_cfg->cs[cs].config5);
-	writel(FPGA_GPMC3_CONFIG6, &gpmc_cfg->cs[cs].config6);
-	writel(FPGA_GPMC3_CONFIG7, &gpmc_cfg->cs[cs].config7);
-	
-	cs = 4;
-	writel(FPGA_GPMC4_CONFIG1, &gpmc_cfg->cs[cs].config1);
-	writel(FPGA_GPMC4_CONFIG2, &gpmc_cfg->cs[cs].config2);
-	writel(FPGA_GPMC4_CONFIG3, &gpmc_cfg->cs[cs].config3);
-	writel(FPGA_GPMC4_CONFIG4, &gpmc_cfg->cs[cs].config4);
-	writel(FPGA_GPMC4_CONFIG5, &gpmc_cfg->cs[cs].config5);
-	writel(FPGA_GPMC4_CONFIG6, &gpmc_cfg->cs[cs].config6);
-	writel(FPGA_GPMC4_CONFIG7, &gpmc_cfg->cs[cs].config7);
-
-#if 0
-	/* Enable off mode for NWE in PADCONF_GPMC_NWE register */
-	writew(readw(&ctrl_base ->gpmc_nwe) | 0x0E00, &ctrl_base->gpmc_nwe);
-	/* Enable off mode for NOE in PADCONF_GPMC_NADV_ALE register */
-	writew(readw(&ctrl_base->gpmc_noe) | 0x0E00, &ctrl_base->gpmc_noe);
-	/* Enable off mode for ALE in PADCONF_GPMC_NADV_ALE register */
-	writew(readw(&ctrl_base->gpmc_nadv_ale) | 0x0E00,
-	        &ctrl_base->gpmc_nadv_ale);
-#endif
-}
 
