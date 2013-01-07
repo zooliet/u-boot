@@ -110,18 +110,6 @@ Xilinx_desc fpga[CONFIG_FPGA_COUNT] = {
  */
 void print_fpga_revision (void)
 {
-#if KIMBG_CHG
-#else
-	vu_long *rev_p = (vu_long *) 0x60000008;
-
-	printf ("FPGA Revision 0x%.8lx"
-		" (Date %.2lx/%.2lx/%.2lx, Status \"%.1lx\", Version %.3lu)\n",
-		*rev_p,
-		((*rev_p >> 28) & 0xf),
-		((*rev_p >> 20) & 0xff),
-		((*rev_p >> 12) & 0xff),
-		((*rev_p >> 8) & 0xf), (*rev_p & 0xff));
-#endif
 }
 
 
@@ -134,56 +122,7 @@ void print_fpga_revision (void)
  */
 int test_fpga_ibtr (void)
 {
-#if KIMBG_CHG
 	return 0;
-#else
-	vu_long *ibtr_p = (vu_long *) 0x60000010;
-	vu_long readback;
-	vu_long compare;
-	int i;
-	int j;
-	int k;
-	int pass = 1;
-
-	static const ulong bitpattern[] = {
-		0xdeadbeef,	/* magic ID pattern for debug   */
-		0x00000001,	/* single bit                                   */
-		0x00000003,	/* two adjacent bits                    */
-		0x00000007,	/* three adjacent bits                  */
-		0x0000000F,	/* four adjacent bits                   */
-		0x00000005,	/* two non-adjacent bits                */
-		0x00000015,	/* three non-adjacent bits              */
-		0x00000055,	/* four non-adjacent bits               */
-		0xaaaaaaaa,	/* alternating 1/0                              */
-	};
-
-	for (i = 0; i < 1024; i++) {
-		for (j = 0; j < 31; j++) {
-			for (k = 0;
-			     k < sizeof (bitpattern) / sizeof (bitpattern[0]);
-			     k++) {
-				*ibtr_p = compare = (bitpattern[k] << j);
-				readback = *ibtr_p;
-				if (readback != ~compare) {
-					printf ("%s:%d: FPGA test fail: expected 0x%.8lx" " actual 0x%.8lx\n", __FUNCTION__, __LINE__, ~compare, readback);
-					pass = 0;
-					break;
-				}
-			}
-			if (!pass)
-				break;
-		}
-		if (!pass)
-			break;
-	}
-	if (pass) {
-		printf ("FPGA inverting bus test passed\n");
-		print_fpga_revision ();
-	} else {
-		printf ("** FPGA inverting bus test failed\n");
-	}
-	return pass;
-#endif
 }
 
 
@@ -192,20 +131,7 @@ int test_fpga_ibtr (void)
  */
 void fpga_reset (int assert)
 {
-#if KIMBG_CHG
 	DBG_PRT("\n");
-#else
-	volatile immap_t *immap = (immap_t *) CONFIG_SYS_IMMR;
-
-	PRINTF ("%s:%d: RESET ", __FUNCTION__, __LINE__);
-	if (assert) {
-		immap->im_ioport.iop_pcdat &= ~(0x8000 >> FPGA_RESET_BIT_NUM);
-		PRINTF ("asserted\n");
-	} else {
-		immap->im_ioport.iop_pcdat |= (0x8000 >> FPGA_RESET_BIT_NUM);
-		PRINTF ("deasserted\n");
-	}
-#endif
 }
 
 
@@ -253,7 +179,6 @@ int sio_init_fpga (void)
  */
 int fpga_pgm_fn (int assert, int flush, int cookie)
 {
-#if KIMBG_CHG
 	int	ret;
 
 	DBG_PRT("%d\n",assert);
@@ -263,30 +188,12 @@ int fpga_pgm_fn (int assert, int flush, int cookie)
 		DBG_ERR_PRT("\n");
 		return 0;
 	}
-#if 1
 	if (assert)
 		gpio_direction_output(GPIO_OUT_PGM,0);
 	else
 		gpio_direction_output(GPIO_OUT_PGM,1);
 //		gpio_set_value(GPIO_OUT_PGM,0);
-#endif
 	return assert;
-#else
-	volatile immap_t *immap = (immap_t *) CONFIG_SYS_IMMR;
-
-	PRINTF ("%s:%d: FPGA PROGRAM ", __FUNCTION__, __LINE__);
-
-	if (assert) {
-		immap->im_ioport.iop_padat &=
-			~(0x8000 >> FPGA_PROGRAM_BIT_NUM);
-		PRINTF ("asserted\n");
-	} else {
-		immap->im_ioport.iop_padat |=
-			(0x8000 >> FPGA_PROGRAM_BIT_NUM);
-		PRINTF ("deasserted\n");
-	}
-	return assert;
-#endif
 }
 
 
@@ -296,7 +203,6 @@ int fpga_pgm_fn (int assert, int flush, int cookie)
  */
 int fpga_init_fn (int cookie)
 {
-#if KIMBG_CHG
 	int	ret,val;
 	static int count=0;
 
@@ -313,26 +219,10 @@ int fpga_init_fn (int cookie)
 	else
 		ret = 1;
 	//for debug only
-#if 0
-	if(count != 0)
-		ret = 0;
-#endif
 	++count;
 	if((count % 1000) == 0)
 	DBG_PRT("val=%d,ret=%d\n",val,ret);
 	return ret;
-#else
-	volatile immap_t *immap = (immap_t *) CONFIG_SYS_IMMR;
-
-	PRINTF ("%s:%d: INIT check... ", __FUNCTION__, __LINE__);
-	if (immap->im_cpm.cp_pbdat & (0x80000000 >> FPGA_INIT_BIT_NUM)) {
-		PRINTF ("high\n");
-		return 0;
-	} else {
-		PRINTF ("low\n");
-		return 1;
-	}
-#endif
 }
 
 
@@ -341,7 +231,6 @@ int fpga_init_fn (int cookie)
  */
 int fpga_done_fn (int cookie)
 {
-#if KIMBG_CHG
 	int	ret,val;
 	static int count=0;
 
@@ -358,26 +247,10 @@ int fpga_done_fn (int cookie)
 	else
 		ret = FPGA_FAIL;
 	//for debug only
-#if 0
-	if(count > 0x100)
-		ret = FPGA_SUCCESS;
-#endif
 	++count;
 	if((count % 1000) == 0)
 	DBG_PRT("val=%d,ret=%d,count=%d\n",val,ret,count);
 	return ret;
-#else
-	volatile immap_t *immap = (immap_t *) CONFIG_SYS_IMMR;
-
-	PRINTF ("%s:%d: DONE check... ", __FUNCTION__, __LINE__);
-	if (immap->im_cpm.cp_pbdat & (0x80000000 >> FPGA_DONE_BIT_NUM)) {
-		PRINTF ("high\n");
-		return FPGA_SUCCESS;
-	} else {
-		PRINTF ("low\n");
-		return FPGA_FAIL;
-	}
-#endif
 }
 
 
