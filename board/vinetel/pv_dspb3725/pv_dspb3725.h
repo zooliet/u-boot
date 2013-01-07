@@ -31,6 +31,15 @@ const omap3_sysinfo sysinfo = {
 	"NAND",
 };
 
+
+/* hl1oap: Add FPGA */
+#define  CONFIG_FPGA
+#define  CONFIG_CMD_FPGA
+#define  CONFIG_FPGA_XILINX
+#define  CONFIG_FPGA_VIRTEX2
+#define  CONFIG_FPGA_COUNT  1
+/* hl1oap : End of FPGA */
+
 /* BeagleBoard revisions */
 #define REVISION_AXBX	0x7
 #define REVISION_CX	0x6

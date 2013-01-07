@@ -33,11 +33,18 @@
 #include "fpga.h"
 #include <asm/gpio.h>
 //board/ti/sio/sio.h
+/* hl1oap
 #define SELECTMAP_BASE		0x24000000
 #define GPIO_IN_INIT					122
 #define GPIO_IN_DONE					123
 #define GPIO_OUT_PGM					124
 #define GPIO_OUT_nWE					125
+*/
+#define SELECTMAP_BASE		0x24000000
+#define GPIO_IN_INIT					132
+#define GPIO_IN_DONE					133
+#define GPIO_OUT_PGM					134
+#define GPIO_OUT_nWE					135
 
 DECLARE_GLOBAL_DATA_PTR;
 
