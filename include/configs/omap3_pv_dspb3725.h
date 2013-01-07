@@ -28,6 +28,14 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
+/* hl1oap: Add FPGA */
+#define  CONFIG_FPGA
+#define  CONFIG_CMD_FPGA
+#define  CONFIG_FPGA_XILINX
+#define  CONFIG_FPGA_VIRTEX2
+#define  CONFIG_FPGA_COUNT  1
+/* hl1oap : End of FPGA */
+
 /*
  * High Level Configuration Options
  */
@@ -175,7 +183,7 @@
 #define CONFIG_CMD_GPIO     /* Enable gpio command */
 
 #undef CONFIG_CMD_FLASH   /* flinfo, erase, protect */
-#undef CONFIG_CMD_FPGA    /* FPGA configuration Support */
+/* #undef CONFIG_CMD_FPGA */    /* FPGA configuration Support */
 #undef CONFIG_CMD_IMI   /* iminfo     */
 #undef CONFIG_CMD_IMLS    /* List all found images  */
 
